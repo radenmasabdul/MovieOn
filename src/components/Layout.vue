@@ -1,9 +1,9 @@
 <script setup>
-import Layout from "./components/Layout.vue";
+import Navbar from "./layout/Navbar.vue";
 </script>
 
 <template>
-  <Layout />
+  <Navbar />
 </template>
 
 <style scoped></style>
