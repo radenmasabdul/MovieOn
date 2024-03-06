@@ -1,5 +1,5 @@
 <script setup>
-import Api from "../../utils/index.js";
+import Api from "../utils/index.js";
 
 import { onBeforeMount, ref } from "vue";
 
@@ -80,3 +80,4 @@ onBeforeMount(() => {
   z-index: 1000;
 }
 </style>
+../utils/index.js
