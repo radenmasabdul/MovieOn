@@ -40,8 +40,8 @@ const changePoster = () => {
   if (dataNowPlaying.value.length > 0) {
     currentIndex.value = (currentIndex.value + 1) % dataNowPlaying.value.length;
     posterImages.value = `https://image.tmdb.org/t/p/original${dataNowPlaying.value[currentIndex.value].poster_path}`;
-    titleMovies.value = dataNowPlaying.value[currentIndex.value]?.title;
-    overviewMovies.value = dataNowPlaying.value[currentIndex.value]?.overview;
+    titleMovies.value = dataNowPlaying.value[currentIndex.value].title;
+    overviewMovies.value = dataNowPlaying.value[currentIndex.value].overview;
   }
 };
 
