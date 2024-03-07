@@ -27,7 +27,7 @@ const getNowPlaying = async () => {
     });
 
     if (dataNowPlaying.value.length > 0) {
-      posterImages.value = `https://image.tmdb.org/t/p/w500${dataNowPlaying.value[0].poster_path}`;
+      posterImages.value = `https://image.tmdb.org/t/p/original${dataNowPlaying.value[0].poster_path}`;
     }
 
     intervalId.value = setInterval(changePoster, 5000);
@@ -79,5 +79,8 @@ onBeforeMount(() => {
   background-color: rgba(255, 255, 255, 0.296);
   z-index: 1000;
 }
+
+.hero {
+  transition: background-image 0.5s ease-in-out;
+}
 </style>
-../utils/index.js
