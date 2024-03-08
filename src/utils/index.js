@@ -5,6 +5,7 @@ const Api = axios.create({
     headers: {
         accept: "application/json",
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`
     },
 });
 

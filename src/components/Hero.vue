@@ -1,6 +1,8 @@
 <script setup>
 import Api from "../utils/index.js";
 
+import Modal from "./Layout/Modal.vue";
+
 import { onBeforeMount, ref } from "vue";
 
 let dataNowPlaying = ref([]);
@@ -80,7 +82,7 @@ const handleScroll = () => {
       </p>
     </div>
     <div class="navbar-end">
-      <button class="btn btn-neutral btn-sm">Masuk</button>
+      <Modal />
     </div>
   </div>
 
