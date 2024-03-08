@@ -1,16 +1,75 @@
 <script setup>
+import Api from "../../utils";
+import Swal from "sweetalert2";
+
 import { ref } from "vue";
 
+let dataLogin = ref([]);
 let userName = ref("");
 let password = ref("");
+
+let token = localStorage.getItem("request_token");
+
+let isHidePassword = ref(true);
+let isModalOpen = ref(false);
+
+const submitLogin = async () => {
+  try {
+    let payload = {
+      username: userName.value,
+      password: password.value,
+      request_token: token,
+    };
+
+    const res = await Api.post(
+      `${import.meta.env.VITE_REQUEST_TOKEN}/token/validate_with_login?api_key=${import.meta.env.VITE_TMDB_KEY}`,
+      payload
+    );
+
+    dataLogin.value = res.data;
+
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Login Successfully!",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+
+    closeModal();
+  } catch (error) {
+    console.error(error);
+    Swal.fire({
+      position: "center",
+      icon: "error",
+      title: "You must provide a username and password.",
+    });
+  }
+};
+
+const togglePasswordVisibility = () => {
+  isHidePassword.value = !isHidePassword.value;
+};
+
+const openModal = () => {
+  isModalOpen.value = true;
+};
+
+const closeModal = () => {
+  isModalOpen.value = false;
+  userName.value = "";
+  password.value = "";
+};
 </script>
 
 <template>
-  <button class="btn btn-neutral btn-sm" onclick="my_modal_3.showModal()">Login</button>
-  <dialog id="my_modal_3" class="modal">
-    <div class="modal-box">
-      <form method="dialog">
-        <button class="absolute right-2 top-2">
+  <label @click="openModal" for="my-modal-3" type="button" class="btn btn-neutral btn-sm">Login</label>
+
+  <div v-if="isModalOpen">
+    <input type="checkbox" id="my-modal-3" class="modal-toggle" />
+    <div class="modal">
+      <div class="modal-box">
+        <button class="absolute right-2 top-2" @click="closeModal">
           <font-awesome-icon :icon="['fas', 'circle-xmark']" size="xl" style="color: #f20202" />
         </button>
 
@@ -21,7 +80,7 @@ let password = ref("");
         <div class="py-2">
           <label for="username" class="block mb-2 text-sm font-medium text-black font-JakartaSans">Username</label>
           <input
-            type="email"
+            type="text"
             name="username"
             id="username"
             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -33,21 +92,33 @@ let password = ref("");
         <div>
           <label for="password" class="block mb-2 text-sm font-medium text-black font-JakartaSans">Password</label>
           <input
-            type="password"
+            :type="isHidePassword ? 'password' : 'text'"
             name="password"
             id="password"
             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="password"
             v-model="password"
           />
+          <div @click="togglePasswordVisibility" class="absolute right-9 flex items-center style-eyes cursor-pointer">
+            <span>
+              <font-awesome-icon v-if="isHidePassword" :icon="['fas', 'eye']" size="lg" style="color: #000000" />
+              <font-awesome-icon v-else :icon="['fas', 'eye-slash']" size="lg" style="color: #000000" />
+            </span>
+          </div>
         </div>
 
         <div class="py-2">
-          <button class="text-sm font-medium text-black font-JakartaSans">Forgot password?</button>
+          <a
+            href="https://developer.themoviedb.org/docs/getting-started"
+            target="_blank"
+            class="text-sm font-medium text-black font-JakartaSans"
+            >Forgot password?</a
+          >
         </div>
 
         <div>
           <button
+            @click.prevent="submitLogin()"
             type="submit"
             class="w-full text-white bg-black hover:bg-red-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
@@ -59,13 +130,18 @@ let password = ref("");
               href="https://developer.themoviedb.org/docs/getting-started"
               class="font-medium text-black hover:underline font-JakartaSans"
               target="_blank"
-              >Sign up</a
+              >Sign up!</a
             >
           </p>
         </div>
-      </form>
+      </div>
     </div>
-  </dialog>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.style-eyes {
+  top: 25px;
+  bottom: 0px;
+}
+</style>
