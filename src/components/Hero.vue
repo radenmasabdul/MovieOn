@@ -11,6 +11,7 @@ let currentIndex = ref(0);
 let intervalId = ref(null);
 
 let isScrollNavbar = ref(false);
+let isScrollText = ref(false);
 
 const getNowPlaying = async () => {
   try {
@@ -38,6 +39,11 @@ const getNowPlaying = async () => {
   }
 };
 
+onBeforeMount(() => {
+  getNowPlaying();
+  window.addEventListener("scroll", handleScroll);
+});
+
 const changePoster = () => {
   if (dataNowPlaying.value.length > 0) {
     currentIndex.value = (currentIndex.value + 1) % dataNowPlaying.value.length;
@@ -47,15 +53,31 @@ const changePoster = () => {
   }
 };
 
-onBeforeMount(() => {
-  getNowPlaying();
-});
+const handleScroll = () => {
+  const heroElement = document.querySelector(".hero");
+  const navbar = document.querySelector(".navbar.headers");
+
+  if (heroElement && navbar) {
+    const heroHeight = heroElement.offsetHeight;
+    const scrollTop = window.scrollY;
+
+    if (scrollTop > heroHeight) {
+      isScrollNavbar.value = true;
+      isScrollText.value = true;
+    } else {
+      isScrollNavbar.value = false;
+      isScrollText.value = false;
+    }
+  }
+};
 </script>
 
 <template>
-  <div class="navbar headers">
+  <div class="navbar headers" :class="{ 'navbar-white': isScrollNavbar }">
     <div class="navbar-start">
-      <p class="text-2xl text-white font-JakartaSans font-extrabold">Movie On!</p>
+      <p class="text-2xl text-white font-JakartaSans font-extrabold" :class="{ 'text-black': isScrollText }">
+        Movie On!
+      </p>
     </div>
     <div class="navbar-end">
       <button class="btn btn-neutral btn-sm">Masuk</button>
@@ -84,5 +106,14 @@ onBeforeMount(() => {
 
 .hero {
   transition: background-image 0.5s ease-in-out;
+}
+
+.navbar-white {
+  background-color: white;
+  transition: background-color 0.5s linear;
+}
+
+.text-black {
+  color: black;
 }
 </style>

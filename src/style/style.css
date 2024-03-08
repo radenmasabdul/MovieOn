@@ -7,3 +7,7 @@
     height: 5px;
     background: #b3b3b3;
 }
+
+html {
+    scroll-behavior: smooth;
+}
