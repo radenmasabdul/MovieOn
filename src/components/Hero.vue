@@ -10,6 +10,8 @@ let overviewMovies = ref("");
 let currentIndex = ref(0);
 let intervalId = ref(null);
 
+let isScrollNavbar = ref(false);
+
 const getNowPlaying = async () => {
   try {
     let payload = {
