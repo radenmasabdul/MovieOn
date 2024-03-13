@@ -29,13 +29,6 @@ const submitLogin = async () => {
 
     dataLogin.value = res.data;
 
-    // Swal.fire({
-    //   position: "center",
-    //   icon: "success",
-    //   title: "Login Successfully!",
-    //   showConfirmButton: false,
-    //   timer: 1500,
-    // });
     setTimeout(() => {
       Swal.fire({
         position: "center",
