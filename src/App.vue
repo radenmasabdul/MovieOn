@@ -1,5 +1,4 @@
 <script setup>
-import Index from "./pages/Index.vue";
 import Api from "../src/utils/index.js";
 
 import { ref, onBeforeMount } from "vue";
@@ -47,7 +46,9 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <Index />
+  <div>
+    <router-view />
+  </div>
 </template>
 
 <style scoped></style>

@@ -1,6 +1,7 @@
 <script setup>
 import Api from "../../utils";
 import Swal from "sweetalert2";
+import router from "../../routes";
 
 import { ref } from "vue";
 
@@ -28,12 +29,25 @@ const submitLogin = async () => {
 
     dataLogin.value = res.data;
 
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Login Successfully!",
-      showConfirmButton: false,
-      timer: 1500,
+    // Swal.fire({
+    //   position: "center",
+    //   icon: "success",
+    //   title: "Login Successfully!",
+    //   showConfirmButton: false,
+    //   timer: 1500,
+    // });
+    setTimeout(() => {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Login Successfully!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      setTimeout(() => {
+        router.push("/home");
+      }, 1500);
     });
 
     closeModal();
