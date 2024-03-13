@@ -1,5 +1,5 @@
 <script setup>
-import Home from "../src/pages/Home.vue";
+import Index from "./pages/Index.vue";
 import Api from "../src/utils/index.js";
 
 import { ref, onBeforeMount } from "vue";
@@ -47,7 +47,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <Home />
+  <Index />
 </template>
 
 <style scoped></style>

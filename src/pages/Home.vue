@@ -1,13 +1,9 @@
 <script setup>
-import Hero from "../components/Hero.vue";
-import Section from "../components/Section.vue";
-import Footer from "../components/Footer.vue";
+import Navbar from "../components/Layout/Navbar.vue";
 </script>
 
 <template>
-  <Hero />
-  <Section />
-  <Footer />
+  <Navbar />
 </template>
 
 <style scoped></style>
