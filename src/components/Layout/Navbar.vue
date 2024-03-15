@@ -1,4 +1,77 @@
-<script setup></script>
+<script setup>
+import Api from "../../utils";
+import Swal from "sweetalert2";
+import router from "../../routes";
+
+import { ref, onBeforeMount } from "vue";
+
+let dataToken = ref("");
+
+const requestToken = async () => {
+  try {
+    const res = await Api.get(
+      `${import.meta.env.VITE_REQUEST_TOKEN}/token/new?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    );
+
+    const newToken = res.data.request_token;
+    const expiresAtTimestamp = new Date(res.data.expires_at).getTime();
+    const expiresAtHumanReadable = new Date(res.data.expires_at).toString();
+
+    localStorage.setItem("request_token", newToken);
+    localStorage.setItem("token_expiration_timestamp", expiresAtTimestamp.toString());
+    localStorage.setItem("token_expiration_human_readable", expiresAtHumanReadable);
+
+    dataToken.value = res.data.request_token;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const checkTokenValidity = async () => {
+  const expirationTime = parseInt(localStorage.getItem("token_expiration_timestamp"));
+
+  if (expirationTime) {
+    const currentTime = new Date().getTime();
+    if (currentTime > expirationTime) {
+      await requestToken();
+    } else {
+      dataToken.value = localStorage.getItem("request_token");
+    }
+  } else {
+    await requestToken();
+  }
+};
+
+const Logout = async () => {
+  try {
+    localStorage.removeItem("token_expiration_timestamp");
+    localStorage.removeItem("token_expiration_human_readable");
+    localStorage.removeItem("request_token");
+
+    setTimeout(() => {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Logout Successfully!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      checkTokenValidity();
+
+      setTimeout(() => {
+        router.push("/");
+      }, 1500);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+onBeforeMount(async () => {
+  await checkTokenValidity();
+});
+</script>
 
 <template>
   <div class="navbar bg-base-100">
@@ -26,7 +99,7 @@
             </a>
           </li>
           <li><a>Settings</a></li>
-          <li><a>Logout</a></li>
+          <li><button @click.prevent="Logout()">Logout</button></li>
         </ul>
       </div>
     </div>
