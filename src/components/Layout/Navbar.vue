@@ -4,11 +4,14 @@ import Swal from "sweetalert2";
 import router from "../../routes";
 
 import { ref, onBeforeMount } from "vue";
+import moment from "moment";
 
 let dataPopular = ref([]);
 let posterImages = ref("");
 let titleMovies = ref("");
 let overviewMovies = ref("");
+let popularity = ref("");
+let releaseDate = ref("");
 let dataToken = ref("");
 let currentIndex = ref(0);
 let intervalId = ref(null);
@@ -65,6 +68,8 @@ const getPopularMovies = async () => {
       posterImages.value = item.poster_path;
       titleMovies.value = item.title;
       overviewMovies.value = item.overview;
+      popularity.value = item.popularity;
+      releaseDate.value = item.release_date;
     });
 
     if (dataPopular.value.length > 0) {
@@ -133,6 +138,14 @@ const changePoster = () => {
     posterImages.value = `https://image.tmdb.org/t/p/original${dataPopular.value[currentIndex.value].poster_path}`;
     titleMovies.value = dataPopular.value[currentIndex.value].title;
     overviewMovies.value = dataPopular.value[currentIndex.value].overview;
+    popularity.value = dataPopular.value[currentIndex.value].popularity;
+    releaseDate.value = dataPopular.value[currentIndex.value].release_date;
+  }
+};
+
+const formatDate = (value) => {
+  if (value) {
+    return moment(String(value)).format("DD/MM/YYYY");
   }
 };
 </script>
@@ -172,11 +185,21 @@ const changePoster = () => {
   </div>
 
   <div class="hero min-h-screen" :style="{ backgroundImage: `url(${posterImages})` }">
-    <div class="hero-content flex-col lg:flex-row">
-      <div></div>
+    <div class="flex flex-wrap mx-4">
       <div>
         <h1 class="mb-5 text-7xl font-bold text-white font-JakartaSans">{{ titleMovies }}</h1>
         <p class="mb-5 text-lg text-white font-JakartaSans font-medium">{{ overviewMovies }}</p>
+      </div>
+      <div class="flex flex-wrap gap-4 justify-start">
+        <span class="text-white font-JakartaSans text-base">
+          <font-awesome-icon :icon="['fas', 'star']" size="xl" style="color: #ffd43b" />
+          {{ popularity }}
+        </span>
+
+        <span class="text-white font-JakartaSans text-base">
+          <font-awesome-icon :icon="['fas', 'calendar']" size="xl" style="color: #ffd43b" />
+          {{ formatDate(releaseDate) }}
+        </span>
       </div>
     </div>
   </div>
