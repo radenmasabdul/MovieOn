@@ -172,10 +172,11 @@ const changePoster = () => {
   </div>
 
   <div class="hero min-h-screen" :style="{ backgroundImage: `url(${posterImages})` }">
-    <div class="hero-content text-center text-neutral-content">
-      <div class="max-w-md">
-        <h1 class="mb-5 text-5xl font-bold text-white font-JakartaSans">{{ titleMovies }}</h1>
-        <p class="mb-5 text-white font-JakartaSans font-medium">{{ overviewMovies }}</p>
+    <div class="hero-content flex-col lg:flex-row">
+      <div></div>
+      <div>
+        <h1 class="mb-5 text-7xl font-bold text-white font-JakartaSans">{{ titleMovies }}</h1>
+        <p class="mb-5 text-lg text-white font-JakartaSans font-medium">{{ overviewMovies }}</p>
       </div>
     </div>
   </div>
