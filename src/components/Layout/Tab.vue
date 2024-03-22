@@ -15,8 +15,26 @@ const activeTabTv = computed(() => (activeTab.value === "Movies" ? "" : "TV Seri
 
 <template>
   <div role="tablist" class="tabs tabs-bordered">
-    <a role="tab" class="tab" @click="changeTab('Movies')" :class="{ active: activeTab === 'Movies' }">Movies</a>
-    <a role="tab" class="tab" @click="changeTab('TV Series')" :class="{ active: activeTab === 'TV Series' }"
+    <a
+      role="tab"
+      class="tab font-JakartaSans text-base"
+      @click="changeTab('Movies')"
+      :class="{
+        active: activeTab === 'Movies',
+        'text-blue-600': activeTab === 'Movies',
+        'text-white': activeTab !== 'Movies',
+      }"
+      >Movies</a
+    >
+    <a
+      role="tab"
+      class="tab font-JakartaSans text-base"
+      @click="changeTab('TV Series')"
+      :class="{
+        active: activeTab === 'TV Series',
+        'text-blue-600': activeTab === 'TV Series',
+        'text-white': activeTab !== 'TV Series',
+      }"
       >TV Series</a
     >
   </div>
