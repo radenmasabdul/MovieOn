@@ -42,8 +42,7 @@ export const usenowPlayingStore = defineStore('nowPlaying', {
                 }
             }
             catch (error) {
-                alert(error)
-                console.log(error)
+                console.error(error)
             }
         }
     },

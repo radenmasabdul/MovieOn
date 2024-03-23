@@ -42,8 +42,7 @@ export const usetopRatedStore = defineStore('topRated', {
                 }
             }
             catch (error) {
-                alert(error)
-                console.log(error)
+                console.error(error)
             }
         }
     },

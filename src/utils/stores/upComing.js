@@ -34,7 +34,6 @@ export const useupComingStore = defineStore('upComing', {
                 })
 
                 this.dataUpComing = res.data.results
-                console.log('state:', res.data.results);
 
                 if (res.data.results.length > 0) {
                     this.posterImages = `https://image.tmdb.org/t/p/original${res.data.results[0].poster_path}`;
@@ -43,8 +42,7 @@ export const useupComingStore = defineStore('upComing', {
                 }
             }
             catch (error) {
-                alert(error)
-                console.log(error)
+                console.error(error)
             }
         }
     },
