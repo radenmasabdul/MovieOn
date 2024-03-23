@@ -1,14 +1,20 @@
 <script setup>
 import { usenowPlayingStore } from "../../utils/stores/nowPlaying";
 import { usepopularStore } from "../../utils/stores/popular";
+import { usetopRatedStore } from "../../utils/stores/topRated";
+import { useupComingStore } from "../../utils/stores/upComing";
 
 import { onBeforeMount, computed } from "vue";
 
 const store = usenowPlayingStore();
 const storePopular = usepopularStore();
+const storeTopRated = usetopRatedStore();
+const storeUpComing = useupComingStore();
 
 const dataNowPlaying = computed(() => store.getnowPlaying);
 const dataPopular = computed(() => storePopular.getdataPopular);
+const dataTopRated = computed(() => storeTopRated.getTopRated);
+const dataUpComing = computed(() => storeUpComing.getUpComing);
 
 const props = defineProps({
   activeTab: String,
@@ -17,6 +23,8 @@ const props = defineProps({
 const fetchDataMovies = async () => {
   await store.fetchNowPlaying();
   await storePopular.fetchDataPopular();
+  await storeTopRated.fetchTopRated();
+  await storeUpComing.fetchUpComing();
 };
 
 onBeforeMount(() => {
@@ -65,6 +73,22 @@ const categoryMovies = [
       <div class="mx-4 card" v-else-if="data.title === 'Popular'">
         <div class="carousel carousel-center w-full p-4 space-x-4 bg-transparent rounded-box wrapper">
           <div class="carousel-item" v-for="(movie, index) in dataPopular" :key="index">
+            <img :src="getMoviePoster(movie)" :alt="movie.title" class="rounded-box w-96 cursor-pointer" />
+          </div>
+        </div>
+      </div>
+
+      <div class="mx-4 card" v-else-if="data.title === 'Top Rated'">
+        <div class="carousel carousel-center w-full p-4 space-x-4 bg-transparent rounded-box wrapper">
+          <div class="carousel-item" v-for="(movie, index) in dataTopRated" :key="index">
+            <img :src="getMoviePoster(movie)" :alt="movie.title" class="rounded-box w-96 cursor-pointer" />
+          </div>
+        </div>
+      </div>
+
+      <div class="mx-4 card" v-else-if="data.title === 'Upcoming'">
+        <div class="carousel carousel-center w-full p-4 space-x-4 bg-transparent rounded-box wrapper">
+          <div class="carousel-item" v-for="(movie, index) in dataUpComing" :key="index">
             <img :src="getMoviePoster(movie)" :alt="movie.title" class="rounded-box w-96 cursor-pointer" />
           </div>
         </div>
