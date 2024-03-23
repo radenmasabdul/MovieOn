@@ -1,23 +1,28 @@
 <script setup>
-import Api from "../../utils";
 import Swal from "sweetalert2";
-import router from "../../routes";
-
-import { ref, onBeforeMount } from "vue";
 import moment from "moment";
 
-let dataPopular = ref([]);
-let posterImages = ref("");
-let titleMovies = ref("");
-let overviewMovies = ref("");
-let popularity = ref("");
-let releaseDate = ref("");
-let dataToken = ref("");
+import router from "../../routes";
+
+import { usepopularStore } from "../../utils/stores/popular.js";
+import { ref, onBeforeMount, computed } from "vue";
+
+const store = usepopularStore();
+
+const dataPopular = computed(() => store.getdataPopular);
+const posterImages = computed(() => store.getPosterImages);
+const titleMovies = computed(() => store.getTitleMovies);
+const overviewMovies = computed(() => store.getOverviewMovies);
+const popularity = computed(() => store.getPopularity);
+const releaseDate = computed(() => store.getReleaseDate);
+
 let currentIndex = ref(0);
 let intervalId = ref(null);
 
 let isScrollNavbar = ref(false);
 let isScrollText = ref(false);
+
+let dataToken = ref("");
 
 const requestToken = async () => {
   try {
@@ -54,38 +59,16 @@ const checkTokenValidity = async () => {
   }
 };
 
-const getPopularMovies = async () => {
-  try {
-    let payload = {
-      api_key: import.meta.env.VITE_TMDB_KEY,
-    };
-    const res = await Api.get("/popular", {
-      params: payload,
-    });
-    dataPopular.value = res.data.results;
-
-    dataPopular.value.forEach((item) => {
-      posterImages.value = item.poster_path;
-      titleMovies.value = item.title;
-      overviewMovies.value = item.overview;
-      popularity.value = item.popularity;
-      releaseDate.value = item.release_date;
-    });
-
-    if (dataPopular.value.length > 0) {
-      posterImages.value = `https://image.tmdb.org/t/p/original${dataPopular.value[0].poster_path}`;
-    }
-
-    intervalId.value = setInterval(changePoster, 10000);
-  } catch (error) {
-    console.error(error);
-  }
+const fetchPopularMovies = async () => {
+  await store.fetchDataPopular();
 };
 
 onBeforeMount(async () => {
   await checkTokenValidity();
-  getPopularMovies();
+  fetchPopularMovies();
   window.addEventListener("scroll", handleScroll);
+
+  intervalId.value = setInterval(changePoster, 5000);
 });
 
 const Logout = async () => {
@@ -114,6 +97,15 @@ const Logout = async () => {
   }
 };
 
+const changePoster = () => {
+  currentIndex.value = (currentIndex.value + 1) % dataPopular.value.length;
+  store.posterImages = `https://image.tmdb.org/t/p/original${dataPopular.value[currentIndex.value].poster_path}`;
+  store.titleMovies = dataPopular.value[currentIndex.value].title;
+  store.overviewMovies = dataPopular.value[currentIndex.value].overview;
+  store.popularity = dataPopular.value[currentIndex.value].popularity;
+  store.releaseDate = dataPopular.value[currentIndex.value].release_date;
+};
+
 const handleScroll = () => {
   const heroElement = document.querySelector(".hero");
   const navbar = document.querySelector(".navbar.headers");
@@ -129,17 +121,6 @@ const handleScroll = () => {
       isScrollNavbar.value = false;
       isScrollText.value = false;
     }
-  }
-};
-
-const changePoster = () => {
-  if (dataPopular.value.length > 0) {
-    currentIndex.value = (currentIndex.value + 1) % dataPopular.value.length;
-    posterImages.value = `https://image.tmdb.org/t/p/original${dataPopular.value[currentIndex.value].poster_path}`;
-    titleMovies.value = dataPopular.value[currentIndex.value].title;
-    overviewMovies.value = dataPopular.value[currentIndex.value].overview;
-    popularity.value = dataPopular.value[currentIndex.value].popularity;
-    releaseDate.value = dataPopular.value[currentIndex.value].release_date;
   }
 };
 
