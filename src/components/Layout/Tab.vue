@@ -14,10 +14,10 @@ const activeTabTv = computed(() => (activeTab.value === "Movies" ? "" : "TV Seri
 </script>
 
 <template>
-  <div role="tablist" class="tabs tabs-bordered">
+  <div role="tablist" class="tabs tabs-bordered pt-4">
     <a
       role="tab"
-      class="tab font-JakartaSans text-base"
+      class="tab font-JakartaSans text-xl"
       @click="changeTab('Movies')"
       :class="{
         active: activeTab === 'Movies',
@@ -28,7 +28,7 @@ const activeTabTv = computed(() => (activeTab.value === "Movies" ? "" : "TV Seri
     >
     <a
       role="tab"
-      class="tab font-JakartaSans text-base"
+      class="tab font-JakartaSans text-xl"
       @click="changeTab('TV Series')"
       :class="{
         active: activeTab === 'TV Series',
