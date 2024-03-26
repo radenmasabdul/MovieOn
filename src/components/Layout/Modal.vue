@@ -29,6 +29,8 @@ const submitLogin = async () => {
 
     dataLogin.value = res.data;
 
+    localStorage.setItem("username", userName.value);
+
     setTimeout(() => {
       Swal.fire({
         position: "center",
