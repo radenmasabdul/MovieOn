@@ -76,6 +76,7 @@ const Logout = async () => {
     localStorage.removeItem("token_expiration_timestamp");
     localStorage.removeItem("token_expiration_human_readable");
     localStorage.removeItem("request_token");
+    localStorage.removeItem("username");
 
     setTimeout(() => {
       Swal.fire({
