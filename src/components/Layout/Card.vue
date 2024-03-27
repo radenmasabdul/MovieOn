@@ -5,8 +5,11 @@ import { usetopRatedStore } from "../../utils/stores/topRated";
 import { useupComingStore } from "../../utils/stores/upComing";
 
 import { ref, onBeforeMount, computed } from "vue";
+import { useRouter } from "vue-router";
 
 import Loading from "../Layout/Loading.vue";
+
+const router = useRouter();
 
 const store = usenowPlayingStore();
 const storePopular = usepopularStore();
@@ -59,13 +62,27 @@ const categoryMovies = [
     title: "Upcoming",
   },
 ];
+
+const navigateTo = (title) => {
+  if (title === "Now Playing") {
+    router.push({ name: "nowplaying" });
+  } else if (title === "Popular") {
+    router.push({ name: "popular" });
+  } else if (title === "Top Rated") {
+    router.push({ name: "toprated" });
+  } else if (title === "Upcoming") {
+    router.push({ name: "upcoming" });
+  }
+};
 </script>
 
 <template>
   <div v-if="activeTab === 'Movies'">
     <div class="py-2" v-for="data in categoryMovies" :key="data.id">
       <div class="mx-2">
-        <button class="text-white font-JakartaSans font-bold text-2xl">{{ data.title }}</button>
+        <button class="text-white font-JakartaSans font-bold text-2xl" @click="navigateTo(data.title)">
+          {{ data.title }}
+        </button>
       </div>
 
       <div class="mx-4 card" v-if="data.title === 'Now Playing'">
@@ -119,29 +136,4 @@ const categoryMovies = [
   </div>
 </template>
 
-<style scoped>
-.loader {
-  width: 40px;
-  aspect-ratio: 1;
-  --c: linear-gradient(#000 0 0);
-  --r1: radial-gradient(farthest-side at bottom, #000 93%, #0000);
-  --r2: radial-gradient(farthest-side at top, #000 93%, #0000);
-  background: var(--c), var(--r1), var(--r2), var(--c), var(--r1), var(--r2), var(--c), var(--r1), var(--r2);
-  background-repeat: no-repeat;
-  animation: l1 1s infinite alternate;
-}
-@keyframes l1 {
-  0%,
-  10% {
-    background-size: 8px 0, 8px 4px, 8px 4px;
-    background-position: 0 50%, 0 calc(50% - 2px), 0 calc(50% + 2px), 50% 50%, 50% calc(50% - 2px), 50% calc(50% + 2px),
-      100% 50%, 100% calc(50% - 2px), 100% calc(50% + 2px);
-  }
-  90%,
-  100% {
-    background-size: 8px 100%, 8px 4px, 8px 4px;
-    background-position: 0 50%, 0 -2px, 0 calc(100% + 2px), 50% 50%, 50% -2px, 50% calc(100% + 2px), 100% 50%, 100% -2px,
-      100% calc(100% + 2px);
-  }
-}
-</style>
+<style scoped></style>
