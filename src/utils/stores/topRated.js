@@ -37,7 +37,7 @@ export const usetopRatedStore = defineStore('topRated', {
         }
     },
     actions: {
-        async fetchTopRated(callingComponentName) {
+        async fetchTopRated() {
             if (!this.topRatedDataFetched) {
                 try {
                     let payload = {
@@ -64,8 +64,6 @@ export const usetopRatedStore = defineStore('topRated', {
 
                     this.topRatedDataFetched = true;
 
-                    console.log('Popular data fetched successfully!');
-                    console.log('Fetched from component:', callingComponentName);
                 }
                 catch (error) {
                     console.error(error)

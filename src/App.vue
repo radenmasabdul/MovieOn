@@ -2,10 +2,12 @@
 import Api from "../src/utils/index.js";
 
 import { usetopRatedStore } from "./utils/stores/topRated";
+import { useupComingStore } from "./utils/stores/upComing";
 
 import { ref, onBeforeMount } from "vue";
 
 const storeTopRated = usetopRatedStore();
+const storeUpComing = useupComingStore();
 
 let dataToken = ref("");
 
@@ -47,6 +49,7 @@ const checkTokenValidity = async () => {
 onBeforeMount(async () => {
   await checkTokenValidity();
   await storeTopRated.fetchTopRated();
+  await storeUpComing.fetchUpComing();
 });
 </script>
 

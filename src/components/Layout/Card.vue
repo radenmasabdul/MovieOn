@@ -29,7 +29,7 @@ const isLoading = ref(true);
 
 const fetchDataMovies = async () => {
   isLoading.value = true;
-  await storeUpComing.fetchUpComing();
+  // await storeUpComing.fetchUpComing();
   isLoading.value = false;
 };
 
