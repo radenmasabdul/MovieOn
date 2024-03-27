@@ -1,7 +1,8 @@
 <script setup>
-import { usenowPlayingStore } from "../../../utils/stores/nowPlaying";
 import Loading from "../../Layout/Loading.vue";
+import ButtonToTop from "../../ButtonToTop.vue";
 
+import { usenowPlayingStore } from "../../../utils/stores/nowPlaying";
 import { ref, onBeforeMount, computed } from "vue";
 
 const store = usenowPlayingStore();
@@ -10,6 +11,7 @@ const dataNowPlaying = computed(() => store.getnowPlaying);
 const isLoading = store.getIsLoading;
 
 const itsLoading = ref(false);
+const showToTopButton = ref(false);
 
 onBeforeMount(async () => {
   itsLoading.value = true;
@@ -32,6 +34,8 @@ const handleScroll = () => {
   if (remainingDistance <= windowHeight) {
     loadNextPage();
   }
+
+  showToTopButton.value = window.scrollY > 500;
 };
 
 const loadNextPage = async () => {
@@ -45,6 +49,8 @@ const loadNextPage = async () => {
 
 <template>
   <div class="bg-black py-20">
+    <ButtonToTop v-if="showToTopButton" />
+
     <h1 class="text-white text-2xl font-JakartaSans font-bold text-center">Now Playing List</h1>
 
     <div class="style py-4">
