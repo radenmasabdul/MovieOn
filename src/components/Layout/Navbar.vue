@@ -2,6 +2,7 @@
 import Swal from "sweetalert2";
 import moment from "moment";
 
+import Api from "../../utils/index";
 import router from "../../routes";
 
 import { usepopularStore } from "../../utils/stores/popular.js";
