@@ -29,12 +29,11 @@ const isLoading = ref(true);
 
 const fetchDataMovies = async () => {
   isLoading.value = true;
-  await storeTopRated.fetchTopRated();
   await storeUpComing.fetchUpComing();
   isLoading.value = false;
 };
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
   fetchDataMovies();
 });
 
