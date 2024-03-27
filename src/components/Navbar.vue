@@ -74,7 +74,9 @@ const Logout = async () => {
 <template>
   <div class="navbar headers bg-black">
     <div class="flex-1">
-      <p class="text-2xl text-white font-JakartaSans font-extrabold">Movie On!</p>
+      <router-link to="/home">
+        <p class="text-2xl text-white font-JakartaSans font-extrabold">Movie On!</p>
+      </router-link>
     </div>
     <div class="flex-none gap-2">
       <div class="form-control">

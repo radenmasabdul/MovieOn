@@ -1,18 +1,45 @@
 <script setup>
 import { usenowPlayingStore } from "../../../utils/stores/nowPlaying";
+import Loading from "../../Layout/Loading.vue";
 
 import { ref, onBeforeMount, computed } from "vue";
 
 const store = usenowPlayingStore();
 
 const dataNowPlaying = computed(() => store.getnowPlaying);
+const isLoading = store.getIsLoading;
+
+const itsLoading = ref(false);
 
 onBeforeMount(async () => {
+  itsLoading.value = true;
   await store.fetchNowPlaying();
+  itsLoading.value = false;
+  window.addEventListener("scroll", handleScroll);
 });
 
 const getMoviePoster = (movie) => {
   return `https://image.tmdb.org/t/p/original${movie.poster_path}`;
+};
+
+const handleScroll = () => {
+  const scrollY = window.scrollY;
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.body.scrollHeight;
+
+  const remainingDistance = documentHeight - (scrollY + windowHeight);
+
+  if (remainingDistance <= windowHeight) {
+    loadNextPage();
+  }
+};
+
+const loadNextPage = async () => {
+  try {
+    await store.fetchNextPage();
+  } catch (error) {
+    console.error(error);
+  }
 };
 </script>
 
@@ -23,8 +50,16 @@ const getMoviePoster = (movie) => {
     <div class="style py-4">
       <div class="flex flex-wrap justify-center items-center gap-4">
         <div class="card w-96 bg-base-100 shadow-xl" v-for="(movie, index) in dataNowPlaying" :key="index">
-          <figure><img :src="getMoviePoster(movie)" :alt="movie.title" class="cursor-pointer" /></figure>
+          <div v-if="itsLoading">
+            <Loading />
+          </div>
+
+          <img v-else :src="getMoviePoster(movie)" :alt="movie.title" class="cursor-pointer" />
         </div>
+      </div>
+
+      <div v-if="isLoading">
+        <Loading />
       </div>
     </div>
   </div>
@@ -48,7 +83,7 @@ const getMoviePoster = (movie) => {
 
 @media (max-width: 640px) {
   .card {
-    width: calc(50% - 2rem); /* Set width to 50% minus gap */
+    width: calc(50% - 2rem);
   }
 }
 </style>
