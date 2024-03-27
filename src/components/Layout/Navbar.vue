@@ -55,7 +55,6 @@ const checkTokenValidity = async () => {
 
 onBeforeMount(async () => {
   await checkTokenValidity();
-  await store.fetchDataPopular("NAVBAR");
   window.addEventListener("scroll", handleScroll);
 
   intervalId.value = setInterval(changePoster, 5000);

@@ -44,7 +44,6 @@ const handleScroll = () => {
 };
 
 onBeforeMount(async () => {
-  await store.fetchNowPlaying();
   window.addEventListener("scroll", handleScroll);
   intervalId.value = setInterval(changePoster, 5000);
 });

@@ -1,11 +1,15 @@
 <script setup>
 import Api from "../src/utils/index.js";
 
+import { usenowPlayingStore } from "./utils/stores/nowPlaying";
+import { usepopularStore } from "./utils/stores/popular";
 import { usetopRatedStore } from "./utils/stores/topRated";
 import { useupComingStore } from "./utils/stores/upComing";
 
 import { ref, onBeforeMount } from "vue";
 
+const store = usenowPlayingStore();
+const storePopular = usepopularStore();
 const storeTopRated = usetopRatedStore();
 const storeUpComing = useupComingStore();
 
@@ -48,6 +52,8 @@ const checkTokenValidity = async () => {
 
 onBeforeMount(async () => {
   await checkTokenValidity();
+  await store.fetchNowPlaying();
+  await storePopular.fetchDataPopular();
   await storeTopRated.fetchTopRated();
   await storeUpComing.fetchUpComing();
 });
