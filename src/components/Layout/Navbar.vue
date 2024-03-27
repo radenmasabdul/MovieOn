@@ -6,16 +6,9 @@ import Api from "../../utils/index";
 import router from "../../routes";
 
 import { usepopularStore } from "../../utils/stores/popular.js";
-import { ref, onBeforeMount, computed } from "vue";
+import { ref, onBeforeMount } from "vue";
 
 const store = usepopularStore();
-
-const dataPopular = computed(() => store.getdataPopular);
-const posterImages = computed(() => store.getPosterImages);
-const titleMovies = computed(() => store.getTitleMovies);
-const overviewMovies = computed(() => store.getOverviewMovies);
-const popularity = computed(() => store.getPopularity);
-const releaseDate = computed(() => store.getReleaseDate);
 
 let currentIndex = ref(0);
 let intervalId = ref(null);
@@ -60,13 +53,9 @@ const checkTokenValidity = async () => {
   }
 };
 
-const fetchPopularMovies = async () => {
-  await store.fetchDataPopular();
-};
-
 onBeforeMount(async () => {
   await checkTokenValidity();
-  fetchPopularMovies();
+  await store.fetchDataPopular("NAVBAR");
   window.addEventListener("scroll", handleScroll);
 
   intervalId.value = setInterval(changePoster, 5000);
@@ -100,12 +89,17 @@ const Logout = async () => {
 };
 
 const changePoster = () => {
-  currentIndex.value = (currentIndex.value + 1) % dataPopular.value.length;
-  store.posterImages = `https://image.tmdb.org/t/p/original${dataPopular.value[currentIndex.value].poster_path}`;
-  store.titleMovies = dataPopular.value[currentIndex.value].title;
-  store.overviewMovies = dataPopular.value[currentIndex.value].overview;
-  store.popularity = dataPopular.value[currentIndex.value].popularity;
-  store.releaseDate = dataPopular.value[currentIndex.value].release_date;
+  if (store.dataPopular.length > 0) {
+    currentIndex.value = (currentIndex.value + 1) % store.dataPopular.length;
+    const currentMovie = store.dataPopular[currentIndex.value];
+    if (currentMovie && currentMovie.poster_path) {
+      store.posterImages = `https://image.tmdb.org/t/p/original${currentMovie.poster_path}`;
+      store.titleMovies = currentMovie.title;
+      store.overviewMovies = currentMovie.overview;
+      store.popularity = currentMovie.popularity;
+      store.releaseDate = currentMovie.release_date;
+    }
+  }
 };
 
 const handleScroll = () => {
@@ -167,21 +161,21 @@ const formatDate = (value) => {
     </div>
   </div>
 
-  <div class="hero min-h-screen" :style="{ backgroundImage: `url(${posterImages})` }">
+  <div class="hero min-h-screen" :style="{ backgroundImage: `url(${store.posterImages})` }">
     <div class="flex flex-wrap mx-4">
       <div>
-        <h1 class="mb-5 text-7xl font-bold text-white font-JakartaSans">{{ titleMovies }}</h1>
-        <p class="mb-5 text-lg text-white font-JakartaSans font-medium">{{ overviewMovies }}</p>
+        <h1 class="mb-5 text-7xl font-bold text-white font-JakartaSans">{{ store.titleMovies }}</h1>
+        <p class="mb-5 text-lg text-white font-JakartaSans font-medium">{{ store.overviewMovies }}</p>
       </div>
       <div class="flex flex-wrap gap-4 justify-start">
         <span class="text-white font-JakartaSans text-base">
           <font-awesome-icon :icon="['fas', 'star']" size="xl" style="color: #ffd43b" />
-          {{ popularity }}
+          {{ store.popularity }}
         </span>
 
         <span class="text-white font-JakartaSans text-base">
           <font-awesome-icon :icon="['fas', 'calendar']" size="xl" style="color: #ffd43b" />
-          {{ formatDate(releaseDate) }}
+          {{ formatDate(store.releaseDate) }}
         </span>
       </div>
     </div>

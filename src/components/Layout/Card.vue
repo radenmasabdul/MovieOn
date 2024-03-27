@@ -29,8 +29,6 @@ const isLoading = ref(true);
 
 const fetchDataMovies = async () => {
   isLoading.value = true;
-  await store.fetchNowPlaying();
-  await storePopular.fetchDataPopular();
   await storeTopRated.fetchTopRated();
   await storeUpComing.fetchUpComing();
   isLoading.value = false;
