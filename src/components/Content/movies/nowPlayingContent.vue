@@ -9,6 +9,7 @@ const store = usenowPlayingStore();
 
 const dataNowPlaying = computed(() => store.getnowPlaying);
 const isLoading = store.getIsLoading;
+const isEndOfPage = store.getIsEndOfPage;
 
 const itsLoading = ref(false);
 const showToTopButton = ref(false);
@@ -31,7 +32,7 @@ const handleScroll = () => {
 
   const remainingDistance = documentHeight - (scrollY + windowHeight);
 
-  if (remainingDistance <= windowHeight) {
+  if (remainingDistance <= windowHeight && !isLoading && !isEndOfPage) {
     loadNextPage();
   }
 

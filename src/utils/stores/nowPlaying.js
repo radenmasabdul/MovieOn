@@ -11,6 +11,7 @@ export const usenowPlayingStore = defineStore('nowPlaying', {
         language: 'en-US',
         isLoading: false,
         isEndOfPage: false,
+        nowPlayingDataFetched: false,
     }),
     getters: {
         getnowPlaying(state) {
@@ -37,42 +38,47 @@ export const usenowPlayingStore = defineStore('nowPlaying', {
     },
     actions: {
         async fetchNowPlaying() {
-            try {
-                let payload = {
-                    api_key: import.meta.env.VITE_TMDB_KEY,
-                    page: this.currentPage,
-                    language: this.language
-                };
+            if (!this.nowPlayingDataFetched) {
+                try {
+                    let payload = {
+                        api_key: import.meta.env.VITE_TMDB_KEY,
+                        page: this.currentPage,
+                        language: this.language
+                    };
 
-                const res = await Api.get("/now_playing", {
-                    params: payload,
-                })
+                    const res = await Api.get("/now_playing", {
+                        params: payload,
+                    })
 
-                if (res.data.results.length === 0) {
-                    this.isEndOfPage = true;
+                    if (res.data.results.length === 0) {
+                        this.isEndOfPage = true;
+                    }
+
+                    this.dataNowPlaying = [...this.dataNowPlaying, ...res.data.results];
+
+                    if (res.data.results.length > 0) {
+                        this.posterImages = `https://image.tmdb.org/t/p/original${res.data.results[0].poster_path}`;
+                        this.titleMovies = res.data.results[0].title;
+                        this.overviewMovies = res.data.results[0].overview;
+                    }
+
+                    this.nowPlayingDataFetched = true;
                 }
-
-                this.dataNowPlaying = [...this.dataNowPlaying, ...res.data.results];
-
-                if (res.data.results.length > 0) {
-                    this.posterImages = `https://image.tmdb.org/t/p/original${res.data.results[0].poster_path}`;
-                    this.titleMovies = res.data.results[0].title;
-                    this.overviewMovies = res.data.results[0].overview;
+                catch (error) {
+                    console.error(error)
+                } finally {
+                    this.isLoading = false;
                 }
-            }
-            catch (error) {
-                console.error(error)
-            } finally {
-                this.isLoading = false;
             }
         },
         async fetchNextPage() {
-
             if (this.isEndOfPage || this.isLoading) return;
 
             this.isLoading = true;
 
             this.currentPage++;
+
+            this.nowPlayingDataFetched = false;
 
             await this.fetchNowPlaying();
         }
