@@ -5,8 +5,11 @@ import { usepopularTvStore } from "../../utils/stores/tvseries/popularTv";
 import { usetopRatedTvStore } from "../../utils/stores/tvseries/topRatedTv";
 
 import { ref, onBeforeMount, computed } from "vue";
+import { useRouter } from "vue-router";
 
 import Loading from "../Layout/Loading.vue";
+
+const router = useRouter();
 
 const store = useairingTodayStore();
 const storeOnTheAir = useonTheAirStore();
@@ -59,13 +62,27 @@ const categoryTvSeries = [
     title: "Top Rated",
   },
 ];
+
+const navigateTo = (title) => {
+  if (title === "Airing Today") {
+    router.push({ name: "airingtoday" });
+  } else if (title === "On The Air") {
+    router.push({ name: "ontheair" });
+  } else if (title === "Popular") {
+    router.push({ name: "popularseries" });
+  } else if (title === "Top Rated") {
+    router.push({ name: "topratedseries" });
+  }
+};
 </script>
 
 <template>
   <div v-if="activeTabTv === 'TV Series'">
     <div class="py-2" v-for="data in categoryTvSeries" :key="data.id">
       <div class="mx-2">
-        <button class="text-white font-JakartaSans font-bold text-2xl">{{ data.title }}</button>
+        <button class="text-white font-JakartaSans font-bold text-2xl" @click="navigateTo(data.title)">
+          {{ data.title }}
+        </button>
       </div>
 
       <div class="mx-4 card" v-if="data.title === 'Airing Today'">

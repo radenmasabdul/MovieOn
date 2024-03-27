@@ -6,6 +6,10 @@ import nowPlaying from "../pages/movies/nowPlaying.vue";
 import popular from "../pages/movies/popular.vue";
 import topRated from "../pages/movies/topRated.vue";
 import upComing from "../pages/movies/upComing.vue";
+import airingToday from "../pages/series/airingToday.vue";
+import onTheAir from "../pages/series/onTheAir.vue";
+import popularSeries from "../pages/series/popularSeries.vue";
+import topRatedSeries from "../pages/series/topRatedSeries.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASEURL),
@@ -56,6 +60,38 @@ const router = createRouter({
             component: upComing,
             meta: {
                 title: "Up Coming"
+            },
+        },
+        {
+            path: "/airingtoday",
+            name: "airingtoday",
+            component: airingToday,
+            meta: {
+                title: "Airing Today"
+            },
+        },
+        {
+            path: "/ontheair",
+            name: "ontheair",
+            component: onTheAir,
+            meta: {
+                title: "On The Air"
+            },
+        },
+        {
+            path: "/popularseries",
+            name: "popularseries",
+            component: popularSeries,
+            meta: {
+                title: "Popular Series"
+            },
+        },
+        {
+            path: "/topratedseries",
+            name: "topratedseries",
+            component: topRatedSeries,
+            meta: {
+                title: "Top Rated Series"
             },
         },
     ]
