@@ -1,7 +1,13 @@
-<script setup></script>
+<script setup>
+import Navbar from "../../components/Navbar.vue";
+import OnTheAirContent from "../../components/Content/series/onTheAirContent.vue";
+import Footer from "../../components/Footer.vue";
+</script>
 
 <template>
-  <h1>TEST ON THE AIR PAGES</h1>
+  <Navbar />
+  <OnTheAirContent />
+  <Footer />
 </template>
 
 <style scoped></style>
