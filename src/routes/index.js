@@ -18,6 +18,7 @@ import topRatedSeries from "../pages/series/topRatedSeries.vue";
 //detail movies
 import detailsNowPlaying from "../pages/details/movies/detailsNowPlaying.vue"
 import detailsPopular from "../pages/details/movies/detailsPopular.vue"
+import detailsTopRated from "../pages/details/movies/detailsTopRated.vue"
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASEURL),
@@ -115,7 +116,15 @@ const router = createRouter({
             name: "detailspopular",
             component: detailsPopular,
             meta: {
-                title: "Now Playing Movies"
+                title: "Popular Movies"
+            },
+        },
+        {
+            path: "/movies/toprated/:title/:id",
+            name: "detailstoprated",
+            component: detailsTopRated,
+            meta: {
+                title: "Top Rated Movies"
             },
         },
     ]
