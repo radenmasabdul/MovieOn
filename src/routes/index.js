@@ -2,14 +2,21 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import Index from "../pages/Index.vue";
 import Home from "../pages/Home.vue"
+
+//list category movies
 import nowPlaying from "../pages/movies/nowPlaying.vue";
 import popular from "../pages/movies/popular.vue";
 import topRated from "../pages/movies/topRated.vue";
 import upComing from "../pages/movies/upComing.vue";
+
+//list category tv series
 import airingToday from "../pages/series/airingToday.vue";
 import onTheAir from "../pages/series/onTheAir.vue";
 import popularSeries from "../pages/series/popularSeries.vue";
 import topRatedSeries from "../pages/series/topRatedSeries.vue";
+
+//detail movies
+import detailsNowPlaying from "../pages/details/movies/detailsNowPlaying.vue"
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASEURL),
@@ -94,7 +101,20 @@ const router = createRouter({
                 title: "Top Rated Series"
             },
         },
+        {
+            path: "/movies/:title/:id",
+            name: "detailsnowplaying",
+            component: detailsNowPlaying,
+            meta: {
+                title: "Now Playing Details"
+            },
+        },
     ]
+});
+
+router.beforeEach((to, from, next) => {
+    document.title = `MOVIE ON || ${to.meta.title}`;
+    next();
 });
 
 export default router;
