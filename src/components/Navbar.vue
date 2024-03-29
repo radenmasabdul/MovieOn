@@ -82,6 +82,7 @@ const Logout = async () => {
       <div class="form-control">
         <input
           type="text"
+          name="search"
           class="bg-transparent border-2 border-white text-white font-JakartaSans text-sm rounded-lg input-primary input-bordered w-24 md:w-auto focus:ring-blue-700 block p-2.5"
         />
       </div>
