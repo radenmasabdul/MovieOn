@@ -6,12 +6,16 @@ import { usepopularStore } from "./utils/stores/popular";
 import { usetopRatedStore } from "./utils/stores/topRated";
 import { useupComingStore } from "./utils/stores/upComing";
 
+import { useairingTodayStore } from "./utils/stores/tvseries/airingToday";
+
 import { ref, onBeforeMount } from "vue";
 
 const store = usenowPlayingStore();
 const storePopular = usepopularStore();
 const storeTopRated = usetopRatedStore();
 const storeUpComing = useupComingStore();
+
+const storeAiringToday = useairingTodayStore();
 
 let dataToken = ref("");
 
@@ -56,6 +60,8 @@ onBeforeMount(async () => {
   await storePopular.fetchDataPopular();
   await storeTopRated.fetchTopRated();
   await storeUpComing.fetchUpComing();
+
+  await storeAiringToday.fetchDataAiringToday();
 });
 </script>
 
