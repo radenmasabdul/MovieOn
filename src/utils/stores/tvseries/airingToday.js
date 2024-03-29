@@ -82,27 +82,5 @@ export const useairingTodayStore = defineStore('airingToday', {
 
             await this.fetchDataAiringToday();
         }
-        // async fetchDataAiringToday() {
-        //     try {
-        //         let payload = {
-        //             api_key: import.meta.env.VITE_TMDB_KEY,
-        //         };
-
-        //         const res = await ApiTvSeries.get("/airing_today", {
-        //             params: payload,
-        //         })
-
-        //         this.dataAiringToday = res.data.results
-
-        //         if (res.data.results.length > 0) {
-        //             this.posterImages = `https://image.tmdb.org/t/p/original${res.data.results[0].poster_path}`;
-        //             this.titleMovies = res.data.results[0].original_name;
-        //             this.overviewMovies = res.data.results[0].overview;
-        //         }
-        //     }
-        //     catch (error) {
-        //         console.error(error)
-        //     }
-        // }
     },
 });
