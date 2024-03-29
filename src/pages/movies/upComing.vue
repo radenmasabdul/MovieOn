@@ -1,7 +1,13 @@
-<script setup></script>
+<script setup>
+import Navbar from "../../components/Navbar.vue";
+import UpComingContent from "../../components/Content/movies/upComingContent.vue";
+import Footer from "../../components/Footer.vue";
+</script>
 
 <template>
-  <h1>TEST UP COMING PAGES</h1>
+  <Navbar />
+  <UpComingContent />
+  <Footer />
 </template>
 
 <style scoped></style>
