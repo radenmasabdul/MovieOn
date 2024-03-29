@@ -1,7 +1,13 @@
-<script setup></script>
+<script setup>
+import Navbar from "../../components/Navbar.vue";
+import PopularTvSeriesContent from "../../components/Content/series/popularTvSeriesContent.vue";
+import Footer from "../../components/Footer.vue";
+</script>
 
 <template>
-  <h1>TEST POPULAR SERIES PAGES</h1>
+  <Navbar />
+  <PopularTvSeriesContent />
+  <Footer />
 </template>
 
 <style scoped></style>
