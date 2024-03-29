@@ -52,7 +52,7 @@ const loadNextPage = async () => {
   <div class="bg-black py-20">
     <ButtonToTop v-if="showToTopButton" />
 
-    <h1 class="text-white text-2xl font-JakartaSans font-bold text-center">Popular List</h1>
+    <h1 class="text-white text-2xl font-JakartaSans font-bold text-center">Up Coming List</h1>
 
     <div class="style py-4">
       <div class="flex flex-wrap justify-center items-center gap-4">
