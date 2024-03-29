@@ -21,6 +21,12 @@ import detailsPopular from "../pages/details/movies/detailsPopular.vue"
 import detailsTopRated from "../pages/details/movies/detailsTopRated.vue"
 import detailsUpComing from "../pages/details/movies/detailsUpComing.vue"
 
+//detail tv series
+import detailsAiringToday from "../pages/details/tvSeries/detailsAiringToday.vue"
+import detailsOnTheAir from "../pages/details/tvSeries/detailsOnTheAir.vue"
+import detailsPopularTvSeries from "../pages/details/tvSeries/detailsPopularTvSeries.vue"
+import detailsTopRatedTvSeries from "../pages/details/tvSeries/detailsTopRatedTvSeries.vue"
+
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASEURL),
     routes: [
@@ -117,7 +123,7 @@ const router = createRouter({
             name: "detailspopular",
             component: detailsPopular,
             meta: {
-                title: "Popular Movies"
+                title: "Popular"
             },
         },
         {
@@ -125,7 +131,7 @@ const router = createRouter({
             name: "detailstoprated",
             component: detailsTopRated,
             meta: {
-                title: "Top Rated Movies"
+                title: "Top Rated"
             },
         },
         {
@@ -133,7 +139,39 @@ const router = createRouter({
             name: "detailsupcoming",
             component: detailsUpComing,
             meta: {
-                title: "Up Coming Movies"
+                title: "Up Coming"
+            },
+        },
+        {
+            path: "/series/airingtoday/:title/:id",
+            name: "detailsairingtoday",
+            component: detailsAiringToday,
+            meta: {
+                title: "Airing Today"
+            },
+        },
+        {
+            path: "/series/ontheair/:title/:id",
+            name: "detailsontheair",
+            component: detailsOnTheAir,
+            meta: {
+                title: "On The Air"
+            },
+        },
+        {
+            path: "/series/popular/:title/:id",
+            name: "detailspopulartvseries",
+            component: detailsPopularTvSeries,
+            meta: {
+                title: "Popular"
+            },
+        },
+        {
+            path: "/series/toprated/:title/:id",
+            name: "detailstopratedtvseries",
+            component: detailsTopRatedTvSeries,
+            meta: {
+                title: "Top Rated"
             },
         },
     ]
