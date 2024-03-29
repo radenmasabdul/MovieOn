@@ -1,7 +1,13 @@
-<script setup></script>
+<script setup>
+import Navbar from "../../components/Navbar.vue";
+import TopRatedTvSeries from "../../components/Content/series/topRatedTvSeries.vue";
+import Footer from "../../components/Footer.vue";
+</script>
 
 <template>
-  <h1>TEST TOP RATED SERIES PAGES</h1>
+  <Navbar />
+  <TopRatedTvSeries />
+  <Footer />
 </template>
 
 <style scoped></style>
