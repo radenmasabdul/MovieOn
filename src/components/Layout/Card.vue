@@ -71,7 +71,7 @@ const navigateTo = (title) => {
       <div class="mx-4 card" v-if="data.title === 'Now Playing'">
         <div class="carousel carousel-center w-full p-4 space-x-4 bg-transparent rounded-box wrapper">
           <div class="carousel-item" v-for="(movie, index) in dataNowPlaying" :key="index">
-            <RouterLink :to="`/movies/${encodeURIComponent(movie.title)}/${movie.id}`">
+            <RouterLink :to="`/movies/nowplaying/${encodeURIComponent(movie.title)}/${movie.id}`">
               <img :src="getMoviePoster(movie)" :alt="movie.title" class="rounded-box w-96 cursor-pointer" />
             </RouterLink>
           </div>
@@ -81,7 +81,9 @@ const navigateTo = (title) => {
       <div class="mx-4 card" v-else-if="data.title === 'Popular'">
         <div class="carousel carousel-center w-full p-4 space-x-4 bg-transparent rounded-box wrapper">
           <div class="carousel-item" v-for="(movie, index) in dataPopular" :key="index">
-            <img :src="getMoviePoster(movie)" :alt="movie.title" class="rounded-box w-96 cursor-pointer" />
+            <RouterLink :to="`/movies/popular/${encodeURIComponent(movie.title)}/${movie.id}`">
+              <img :src="getMoviePoster(movie)" :alt="movie.title" class="rounded-box w-96 cursor-pointer" />
+            </RouterLink>
           </div>
         </div>
       </div>
