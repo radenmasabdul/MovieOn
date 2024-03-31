@@ -52,6 +52,8 @@ const submitLogin = async () => {
       position: "center",
       icon: "error",
       title: "You must provide a username and password.",
+    }).then(() => {
+      location.reload();
     });
   }
 };
