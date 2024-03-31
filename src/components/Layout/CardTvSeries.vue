@@ -64,7 +64,10 @@ const navigateTo = (title) => {
     <div class="py-2" v-for="data in categoryTvSeries" :key="data.id">
       <div class="mx-2">
         <button class="text-white font-JakartaSans font-bold text-2xl" @click="navigateTo(data.title)">
-          {{ data.title }}
+          <span
+            >View All
+            {{ data.title }}
+          </span>
         </button>
       </div>
 
