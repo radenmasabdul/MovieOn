@@ -126,6 +126,7 @@ const router = createRouter({
             meta: {
                 title: "Popular"
             },
+            props: true,
         },
         {
             path: "/movies/toprated/:title/:id",
