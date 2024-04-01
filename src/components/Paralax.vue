@@ -1,0 +1,40 @@
+<script setup>
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const props = defineProps({
+  title: String,
+  id: String,
+});
+
+const getDataNowPlaying = () => {
+  return JSON.parse(router.currentRoute.value.query.dataNowPlaying);
+};
+
+const dataNowPlaying = getDataNowPlaying();
+</script>
+
+<template>
+  <div class="bg-black pt-20 pb-3">
+    <div
+      class="hero min-h-screen bg-base-200"
+      :style="{ backgroundImage: 'url(' + 'https://image.tmdb.org/t/p/original' + dataNowPlaying.backdrop_path + ')' }"
+    >
+      <div class="hero-content flex-col lg:flex-row">
+        <img
+          :src="'https://image.tmdb.org/t/p/original' + dataNowPlaying.poster_path"
+          class="w-96 rounded-lg shadow-2xl"
+        />
+        <div>
+          <h1 class="text-5xl font-bold text-white font-JakartaSans">{{ dataNowPlaying.title }}</h1>
+          <p class="py-6 text-white font-JakartaSans font-medium">
+            {{ dataNowPlaying.overview }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped></style>

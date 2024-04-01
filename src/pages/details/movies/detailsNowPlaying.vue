@@ -1,7 +1,18 @@
-<script setup></script>
+<script setup>
+import Navbar from "../../../components/Navbar.vue";
+import Paralax from "../../../components/Paralax.vue";
+import Footer from "../../../components/Footer.vue";
+
+const props = defineProps({
+  title: String,
+  id: String,
+});
+</script>
 
 <template>
-  <h1>HELLO FROM PAGES DETAILS MOVIES</h1>
+  <Navbar />
+  <Paralax />
+  <Footer />
 </template>
 
 <style scoped></style>

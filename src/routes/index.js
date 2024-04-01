@@ -117,6 +117,7 @@ const router = createRouter({
             meta: {
                 title: "Now Playing Movies"
             },
+            props: true,
         },
         {
             path: "/movies/popular/:title/:id",
