@@ -144,6 +144,7 @@ const router = createRouter({
             meta: {
                 title: "Up Coming"
             },
+            props: true,
         },
         {
             path: "/series/airingtoday/:title/:id",
