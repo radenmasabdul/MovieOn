@@ -6,7 +6,13 @@ import Api from "../../../utils";
 
 import moment from "moment";
 
-import { ref, onBeforeMount } from "vue";
+import { usenowPlayingStore } from "../../../utils/stores/nowPlaying";
+import { ref, onBeforeMount, computed } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const store = usenowPlayingStore();
+const dataNowPlaying = computed(() => store.getnowPlaying);
 
 const props = defineProps({
   title: String,
@@ -43,7 +49,7 @@ const getDetailsMovies = async () => {
     overview.value = res.data.overview;
     popularity.value = res.data.popularity;
     releaseDate.value = res.data.release_date;
-    languageMovies.value = res.data.spoken_languages[0].name;
+    languageMovies.value = res.data.original_language;
     homepage.value = res.data.homepage;
   } catch (error) {
     console.error(error);
@@ -51,13 +57,34 @@ const getDetailsMovies = async () => {
 };
 
 onBeforeMount(async () => {
-  getDetailsMovies();
+  const movieId = router.currentRoute.value.params.id;
+  getDetailsMovies(movieId);
 });
 
 const formatDate = (value) => {
   if (value) {
     return moment(String(value)).format("DD/MM/YYYY");
   }
+};
+
+const getMoviePoster = (movie) => {
+  return `https://image.tmdb.org/t/p/original${movie.poster_path}`;
+};
+
+const filteredNowPlaying = computed(() => {
+  return dataNowPlaying.value.filter((movie) => movie.id !== parseInt(props.id));
+});
+
+const selectMovie = (movie) => {
+  backdropPath.value = movie.backdrop_path;
+  posterPath.value = movie.poster_path;
+  title.value = movie.title;
+  overview.value = movie.overview;
+  popularity.value = movie.popularity;
+  releaseDate.value = movie.release_date;
+  languageMovies.value = movie.original_language;
+
+  router.push(`/movies/nowplaying/${encodeURIComponent(movie.title)}/${movie.id}`);
 };
 </script>
 
@@ -90,7 +117,7 @@ const formatDate = (value) => {
 
             <span class="text-white font-JakartaSans text-base">
               <font-awesome-icon :icon="['fas', 'language']" size="xl" style="color: #ffd43b" />
-              {{ languageMovies }}
+              {{ languageMovies.toUpperCase() }}
             </span>
           </div>
 
@@ -110,6 +137,31 @@ const formatDate = (value) => {
               <span><font-awesome-icon :icon="['fas', 'star']" size="xl" style="color: #ffd43b" /> Give Rating </span>
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mx-4 card">
+      <div class="py-2">
+        <RouterLink to="/nowplaying">
+          <p class="text-white font-JakartaSans font-bold text-2xl">View All Recommendation</p>
+        </RouterLink>
+      </div>
+      <div class="carousel carousel-center w-full p-4 space-x-4 bg-transparent rounded-box wrapper">
+        <div class="carousel-item" v-for="(movie, index) in filteredNowPlaying" :key="index">
+          <template v-if="movie.selected">
+            <RouterLink :to="`/movies/nowplaying/${encodeURIComponent(movie.title)}/${movie.id}`">
+              <img :src="getMoviePoster(movie)" :alt="movie.title" class="rounded-box w-96 cursor-pointer" />
+            </RouterLink>
+          </template>
+          <template v-else>
+            <img
+              :src="getMoviePoster(movie)"
+              :alt="movie.title"
+              class="rounded-box w-96 cursor-pointer"
+              @click="selectMovie(movie)"
+            />
+          </template>
         </div>
       </div>
     </div>
