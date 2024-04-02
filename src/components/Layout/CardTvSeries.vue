@@ -116,7 +116,18 @@ const navigateTo = (title) => {
       <div class="mx-4 card" v-else-if="data.title === 'Popular'">
         <div class="carousel carousel-center w-full p-4 space-x-4 bg-transparent rounded-box wrapper">
           <div class="carousel-item" v-for="(movie, index) in dataPopularTv" :key="index">
-            <RouterLink :to="`/series/popular/${encodeURIComponent(movie.original_name)}/${movie.id}`">
+            <RouterLink
+              :to="{
+                name: 'detailspopulartvseries',
+                params: {
+                  title: encodeURIComponent(movie.original_name),
+                  id: parseInt(movie.id),
+                },
+                query: {
+                  dataPopularTv: JSON.stringify(movie),
+                },
+              }"
+            >
               <img :src="getMoviePoster(movie)" :alt="movie.original_name" class="rounded-box w-96 cursor-pointer" />
             </RouterLink>
           </div>
