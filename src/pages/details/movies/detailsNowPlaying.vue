@@ -94,13 +94,21 @@ const formatDate = (value) => {
             </span>
           </div>
 
-          <div class="py-4">
+          <div class="flex flex-wrap gap-4 justify-start py-4">
             <a :href="homepage" target="_blank" type="button" class="btn btn-neutral btn-sm">
               <span
                 ><font-awesome-icon :icon="['fas', 'play']" size="xl" style="color: #ffd43b" />
                 Watch Now
               </span></a
             >
+
+            <button type="button" class="btn btn-neutral btn-sm">
+              <span><font-awesome-icon :icon="['fas', 'heart']" size="xl" style="color: #ffd43b" /> Favorite </span>
+            </button>
+
+            <button type="button" class="btn btn-neutral btn-sm">
+              <span><font-awesome-icon :icon="['fas', 'star']" size="xl" style="color: #ffd43b" /> Give Rating </span>
+            </button>
           </div>
         </div>
       </div>
