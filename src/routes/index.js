@@ -153,6 +153,7 @@ const router = createRouter({
             meta: {
                 title: "Airing Today"
             },
+            props: true,
         },
         {
             path: "/series/ontheair/:title/:id",
@@ -161,6 +162,7 @@ const router = createRouter({
             meta: {
                 title: "On The Air"
             },
+            props: true,
         },
         {
             path: "/series/popular/:title/:id",
@@ -169,6 +171,7 @@ const router = createRouter({
             meta: {
                 title: "Popular"
             },
+            props: true,
         },
         {
             path: "/series/toprated/:title/:id",
@@ -177,6 +180,7 @@ const router = createRouter({
             meta: {
                 title: "Top Rated"
             },
+            props: true,
         },
     ]
 });
