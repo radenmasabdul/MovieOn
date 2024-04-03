@@ -170,7 +170,7 @@ const redirectToHomepage = () => {
 
     <div class="mx-4 card">
       <div class="py-2">
-        <RouterLink to="/nowplaying">
+        <RouterLink to="/popular">
           <p class="text-white font-JakartaSans font-bold text-2xl">View All Recommendation</p>
         </RouterLink>
       </div>
