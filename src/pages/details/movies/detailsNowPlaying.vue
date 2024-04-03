@@ -2,11 +2,11 @@
 import Navbar from "../../../components/Navbar.vue";
 import Footer from "../../../components/Footer.vue";
 
-import Api from "../../../utils";
-
 import moment from "moment";
 
+import Api from "../../../utils";
 import { usenowPlayingStore } from "../../../utils/stores/nowPlaying";
+
 import { ref, onBeforeMount, computed } from "vue";
 import { useRouter } from "vue-router";
 
@@ -75,16 +75,30 @@ const filteredNowPlaying = computed(() => {
   return dataNowPlaying.value.filter((movie) => movie.id !== parseInt(props.id));
 });
 
-const selectMovie = (movie) => {
-  backdropPath.value = movie.backdrop_path;
-  posterPath.value = movie.poster_path;
-  title.value = movie.title;
-  overview.value = movie.overview;
-  popularity.value = movie.popularity;
-  releaseDate.value = movie.release_date;
-  languageMovies.value = movie.original_language;
+const selectMovie = async (movie) => {
+  try {
+    let payload = {
+      api_key: import.meta.env.VITE_TMDB_KEY,
+      language: "en-US",
+    };
 
-  router.push(`/movies/nowplaying/${encodeURIComponent(movie.title)}/${movie.id}`);
+    const res = await Api.get(`/${movie.id}`, {
+      params: payload,
+    });
+
+    backdropPath.value = res.data.backdrop_path;
+    posterPath.value = res.data.poster_path;
+    title.value = res.data.title;
+    overview.value = res.data.overview;
+    popularity.value = res.data.popularity;
+    releaseDate.value = res.data.release_date;
+    languageMovies.value = res.data.original_language;
+    homepage.value = res.data.homepage;
+
+    router.push(`/movies/nowplaying/${encodeURIComponent(movie.title)}/${movie.id}`);
+  } catch (error) {
+    console.error(error);
+  }
 };
 </script>
 
