@@ -3,6 +3,7 @@ import Navbar from "../../../components/Navbar.vue";
 import Footer from "../../../components/Footer.vue";
 
 import moment from "moment";
+import Swal from "sweetalert2";
 
 import Api from "../../../utils";
 import { usenowPlayingStore } from "../../../utils/stores/nowPlaying";
@@ -58,7 +59,7 @@ const getDetailsMovies = async () => {
 
 onBeforeMount(async () => {
   const movieId = router.currentRoute.value.params.id;
-  getDetailsMovies(movieId);
+  await getDetailsMovies(movieId);
 });
 
 const formatDate = (value) => {
@@ -100,6 +101,18 @@ const selectMovie = async (movie) => {
     console.error(error);
   }
 };
+
+const redirectToHomepage = () => {
+  if (homepage.value) {
+    window.open(homepage.value, "_blank");
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Oops... Something went wrong!",
+      text: "Movie URL Not Available!",
+    });
+  }
+};
 </script>
 
 <template>
@@ -136,12 +149,12 @@ const selectMovie = async (movie) => {
           </div>
 
           <div class="flex flex-wrap gap-4 justify-start py-4">
-            <a :href="homepage" target="_blank" type="button" class="btn btn-neutral btn-sm">
-              <span
-                ><font-awesome-icon :icon="['fas', 'play']" size="xl" style="color: #ffd43b" />
+            <button type="button" class="btn btn-neutral btn-sm" @click="redirectToHomepage">
+              <span>
+                <font-awesome-icon :icon="['fas', 'play']" size="xl" style="color: #ffd43b" />
                 Watch Now
-              </span></a
-            >
+              </span>
+            </button>
 
             <button type="button" class="btn btn-neutral btn-sm">
               <span><font-awesome-icon :icon="['fas', 'heart']" size="xl" style="color: #ffd43b" /> Favorite </span>
