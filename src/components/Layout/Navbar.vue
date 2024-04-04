@@ -15,6 +15,7 @@ let intervalId = ref(null);
 
 let isScrollNavbar = ref(false);
 let isScrollText = ref(false);
+let isScrollInput = ref(false);
 
 let dataToken = ref("");
 
@@ -104,6 +105,7 @@ const changePoster = () => {
 const handleScroll = () => {
   const heroElement = document.querySelector(".hero");
   const navbar = document.querySelector(".navbar.headers");
+  const input = document.querySelector(".input-primary");
 
   if (heroElement && navbar) {
     const heroHeight = heroElement.offsetHeight;
@@ -112,9 +114,11 @@ const handleScroll = () => {
     if (scrollTop > heroHeight) {
       isScrollNavbar.value = true;
       isScrollText.value = true;
+      isScrollInput.value = true;
     } else {
       isScrollNavbar.value = false;
       isScrollText.value = false;
+      isScrollInput.value = false;
     }
   }
 };
@@ -138,6 +142,7 @@ const formatDate = (value) => {
         <input
           type="text"
           name="search"
+          :class="{ 'input-color': isScrollInput }"
           class="bg-transparent border-2 border-white text-white font-JakartaSans text-sm rounded-lg input-primary input-bordered w-24 md:w-auto focus:ring-blue-700 block p-2.5"
         />
       </div>
@@ -202,6 +207,12 @@ const formatDate = (value) => {
 }
 
 .text-black {
+  color: black;
+}
+
+.input-color {
+  transition: border-color 0.5s linear;
+  border-color: blue;
   color: black;
 }
 </style>
