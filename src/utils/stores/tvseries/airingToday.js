@@ -7,6 +7,11 @@ export const useairingTodayStore = defineStore('airingToday', {
         posterImages: '',
         titleMovies: '',
         overviewMovies: '',
+        currentPage: 1,
+        language: 'en-US',
+        isLoading: false,
+        isEndOfPage: false,
+        airingTodayDataFetched: false,
     }),
     getters: {
         getAiringToday(state) {
@@ -21,29 +26,61 @@ export const useairingTodayStore = defineStore('airingToday', {
         getOverviewMovies(state) {
             return state.overviewMovies
         },
+        getLanguage(state) {
+            return state.language;
+        },
+        getIsLoading(state) {
+            return state.isLoading;
+        },
+        getIsEndOfPage(state) {
+            return state.isEndOfPage;
+        }
     },
     actions: {
         async fetchDataAiringToday() {
-            try {
-                let payload = {
-                    api_key: import.meta.env.VITE_TMDB_KEY,
-                };
+            if (!this.airingTodayDataFetched) {
+                try {
+                    let payload = {
+                        api_key: import.meta.env.VITE_TMDB_KEY,
+                        page: this.currentPage,
+                        language: this.language
+                    };
 
-                const res = await ApiTvSeries.get("/airing_today", {
-                    params: payload,
-                })
+                    const res = await ApiTvSeries.get("/airing_today", {
+                        params: payload,
+                    })
 
-                this.dataAiringToday = res.data.results
+                    if (res.data.results.length === 0) {
+                        this.isEndOfPage = true;
+                    }
 
-                if (res.data.results.length > 0) {
-                    this.posterImages = `https://image.tmdb.org/t/p/original${res.data.results[0].poster_path}`;
-                    this.titleMovies = res.data.results[0].original_name;
-                    this.overviewMovies = res.data.results[0].overview;
+                    this.dataAiringToday = [...this.dataAiringToday, ...res.data.results];
+
+                    if (res.data.results.length > 0) {
+                        this.posterImages = `https://image.tmdb.org/t/p/original${res.data.results[0].poster_path}`;
+                        this.titleMovies = res.data.results[0].title;
+                        this.overviewMovies = res.data.results[0].overview;
+                    }
+
+                    this.airingTodayDataFetched = true;
+                }
+                catch (error) {
+                    console.error(error)
+                } finally {
+                    this.isLoading = false;
                 }
             }
-            catch (error) {
-                console.error(error)
-            }
+        },
+        async fetchNextPage() {
+            if (this.isEndOfPage || this.isLoading) return;
+
+            this.isLoading = true;
+
+            this.currentPage++;
+
+            this.airingTodayDataFetched = false;
+
+            await this.fetchDataAiringToday();
         }
     },
 });

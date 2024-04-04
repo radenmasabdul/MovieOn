@@ -3,14 +3,9 @@ import Modal from "./Layout/Modal.vue";
 
 import { usenowPlayingStore } from "../utils/stores/nowPlaying.js";
 
-import { ref, onBeforeMount, computed } from "vue";
+import { ref, onBeforeMount } from "vue";
 
 const store = usenowPlayingStore();
-
-const dataNowPlaying = computed(() => store.getnowPlaying);
-const posterImages = computed(() => store.getPosterImages);
-const titleMovies = computed(() => store.getTitleMovies);
-const overviewMovies = computed(() => store.getOverviewMovies);
 
 let currentIndex = ref(0);
 let intervalId = ref(null);
@@ -18,22 +13,16 @@ let intervalId = ref(null);
 let isScrollNavbar = ref(false);
 let isScrollText = ref(false);
 
-const fetchNowPlaying = async () => {
-  await store.fetchNowPlaying();
-};
-
-onBeforeMount(() => {
-  fetchNowPlaying();
-  window.addEventListener("scroll", handleScroll);
-
-  intervalId.value = setInterval(changePoster, 5000);
-});
-
 const changePoster = () => {
-  currentIndex.value = (currentIndex.value + 1) % dataNowPlaying.value.length;
-  store.posterImages = `https://image.tmdb.org/t/p/original${dataNowPlaying.value[currentIndex.value].poster_path}`;
-  store.titleMovies = dataNowPlaying.value[currentIndex.value].title;
-  store.overviewMovies = dataNowPlaying.value[currentIndex.value].overview;
+  if (store.getnowPlaying.length > 0) {
+    currentIndex.value = (currentIndex.value + 1) % store.getnowPlaying.length;
+    const currentMovie = store.getnowPlaying[currentIndex.value];
+    if (currentMovie && currentMovie.poster_path) {
+      store.posterImages = `https://image.tmdb.org/t/p/original${currentMovie.poster_path}`;
+      store.titleMovies = currentMovie.title;
+      store.overviewMovies = currentMovie.overview;
+    }
+  }
 };
 
 const handleScroll = () => {
@@ -53,6 +42,11 @@ const handleScroll = () => {
     }
   }
 };
+
+onBeforeMount(async () => {
+  window.addEventListener("scroll", handleScroll);
+  intervalId.value = setInterval(changePoster, 30000);
+});
 </script>
 
 <template>
@@ -67,11 +61,11 @@ const handleScroll = () => {
     </div>
   </div>
 
-  <div class="hero min-h-screen" :style="{ backgroundImage: `url(${posterImages})` }">
+  <div class="hero min-h-screen" :style="{ backgroundImage: `url(${store.getPosterImages})` }">
     <div class="hero-content text-center text-neutral-content">
       <div class="max-w-md">
-        <h1 class="mb-5 text-5xl font-bold text-white font-JakartaSans">{{ titleMovies }}</h1>
-        <p class="mb-5 text-white font-JakartaSans font-medium">{{ overviewMovies }}</p>
+        <h1 class="mb-5 text-5xl font-bold text-white font-JakartaSans">{{ store.getTitleMovies }}</h1>
+        <p class="mb-5 text-white font-JakartaSans font-medium">{{ store.getOverviewMovies }}</p>
       </div>
     </div>
   </div>

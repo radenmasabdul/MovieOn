@@ -1,7 +1,27 @@
 <script setup>
 import Api from "../src/utils/index.js";
 
+import { usenowPlayingStore } from "./utils/stores/nowPlaying";
+import { usepopularStore } from "./utils/stores/popular";
+import { usetopRatedStore } from "./utils/stores/topRated";
+import { useupComingStore } from "./utils/stores/upComing";
+
+import { useairingTodayStore } from "./utils/stores/tvseries/airingToday";
+import { useonTheAirStore } from "./utils/stores/tvseries/onTheAir";
+import { usepopularTvStore } from "./utils/stores/tvseries/popularTv";
+import { usetopRatedTvStore } from "./utils/stores/tvseries/topRatedTv";
+
 import { ref, onBeforeMount } from "vue";
+
+const store = usenowPlayingStore();
+const storePopular = usepopularStore();
+const storeTopRated = usetopRatedStore();
+const storeUpComing = useupComingStore();
+
+const storeAiringToday = useairingTodayStore();
+const storeOnTheAir = useonTheAirStore();
+const storeTvPopular = usepopularTvStore();
+const storeTvRated = usetopRatedTvStore();
 
 let dataToken = ref("");
 
@@ -42,6 +62,15 @@ const checkTokenValidity = async () => {
 
 onBeforeMount(async () => {
   await checkTokenValidity();
+  await store.fetchNowPlaying();
+  await storePopular.fetchDataPopular();
+  await storeTopRated.fetchTopRated();
+  await storeUpComing.fetchUpComing();
+
+  await storeAiringToday.fetchDataAiringToday();
+  await storeOnTheAir.fetchDataOnTheAir();
+  await storeTvPopular.fetchDataPopularTv();
+  await storeTvRated.fetchDataTopRatedTv();
 });
 </script>
 

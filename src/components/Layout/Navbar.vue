@@ -2,25 +2,20 @@
 import Swal from "sweetalert2";
 import moment from "moment";
 
+import Api from "../../utils/index";
 import router from "../../routes";
 
 import { usepopularStore } from "../../utils/stores/popular.js";
-import { ref, onBeforeMount, computed } from "vue";
+import { ref, onBeforeMount } from "vue";
 
 const store = usepopularStore();
-
-const dataPopular = computed(() => store.getdataPopular);
-const posterImages = computed(() => store.getPosterImages);
-const titleMovies = computed(() => store.getTitleMovies);
-const overviewMovies = computed(() => store.getOverviewMovies);
-const popularity = computed(() => store.getPopularity);
-const releaseDate = computed(() => store.getReleaseDate);
 
 let currentIndex = ref(0);
 let intervalId = ref(null);
 
 let isScrollNavbar = ref(false);
 let isScrollText = ref(false);
+let isScrollInput = ref(false);
 
 let dataToken = ref("");
 
@@ -59,16 +54,11 @@ const checkTokenValidity = async () => {
   }
 };
 
-const fetchPopularMovies = async () => {
-  await store.fetchDataPopular();
-};
-
 onBeforeMount(async () => {
   await checkTokenValidity();
-  fetchPopularMovies();
   window.addEventListener("scroll", handleScroll);
 
-  intervalId.value = setInterval(changePoster, 5000);
+  intervalId.value = setInterval(changePoster, 30000);
 });
 
 const Logout = async () => {
@@ -99,17 +89,23 @@ const Logout = async () => {
 };
 
 const changePoster = () => {
-  currentIndex.value = (currentIndex.value + 1) % dataPopular.value.length;
-  store.posterImages = `https://image.tmdb.org/t/p/original${dataPopular.value[currentIndex.value].poster_path}`;
-  store.titleMovies = dataPopular.value[currentIndex.value].title;
-  store.overviewMovies = dataPopular.value[currentIndex.value].overview;
-  store.popularity = dataPopular.value[currentIndex.value].popularity;
-  store.releaseDate = dataPopular.value[currentIndex.value].release_date;
+  if (store.dataPopular.length > 0) {
+    currentIndex.value = (currentIndex.value + 1) % store.dataPopular.length;
+    const currentMovie = store.dataPopular[currentIndex.value];
+    if (currentMovie && currentMovie.poster_path) {
+      store.posterImages = `https://image.tmdb.org/t/p/original${currentMovie.poster_path}`;
+      store.titleMovies = currentMovie.title;
+      store.overviewMovies = currentMovie.overview;
+      store.popularity = currentMovie.popularity;
+      store.releaseDate = currentMovie.release_date;
+    }
+  }
 };
 
 const handleScroll = () => {
   const heroElement = document.querySelector(".hero");
   const navbar = document.querySelector(".navbar.headers");
+  const input = document.querySelector(".input-primary");
 
   if (heroElement && navbar) {
     const heroHeight = heroElement.offsetHeight;
@@ -118,9 +114,11 @@ const handleScroll = () => {
     if (scrollTop > heroHeight) {
       isScrollNavbar.value = true;
       isScrollText.value = true;
+      isScrollInput.value = true;
     } else {
       isScrollNavbar.value = false;
       isScrollText.value = false;
+      isScrollInput.value = false;
     }
   }
 };
@@ -143,6 +141,8 @@ const formatDate = (value) => {
       <div class="form-control">
         <input
           type="text"
+          name="search"
+          :class="{ 'input-color': isScrollInput }"
           class="bg-transparent border-2 border-white text-white font-JakartaSans text-sm rounded-lg input-primary input-bordered w-24 md:w-auto focus:ring-blue-700 block p-2.5"
         />
       </div>
@@ -166,21 +166,21 @@ const formatDate = (value) => {
     </div>
   </div>
 
-  <div class="hero min-h-screen" :style="{ backgroundImage: `url(${posterImages})` }">
+  <div class="hero min-h-screen" :style="{ backgroundImage: `url(${store.posterImages})` }">
     <div class="flex flex-wrap mx-4">
       <div>
-        <h1 class="mb-5 text-7xl font-bold text-white font-JakartaSans">{{ titleMovies }}</h1>
-        <p class="mb-5 text-lg text-white font-JakartaSans font-medium">{{ overviewMovies }}</p>
+        <h1 class="mb-5 text-7xl font-bold text-white font-JakartaSans">{{ store.titleMovies }}</h1>
+        <p class="mb-5 text-lg text-white font-JakartaSans font-medium">{{ store.overviewMovies }}</p>
       </div>
       <div class="flex flex-wrap gap-4 justify-start">
         <span class="text-white font-JakartaSans text-base">
           <font-awesome-icon :icon="['fas', 'star']" size="xl" style="color: #ffd43b" />
-          {{ popularity }}
+          {{ store.popularity }}
         </span>
 
         <span class="text-white font-JakartaSans text-base">
           <font-awesome-icon :icon="['fas', 'calendar']" size="xl" style="color: #ffd43b" />
-          {{ formatDate(releaseDate) }}
+          {{ formatDate(store.releaseDate) }}
         </span>
       </div>
     </div>
@@ -207,6 +207,12 @@ const formatDate = (value) => {
 }
 
 .text-black {
+  color: black;
+}
+
+.input-color {
+  transition: border-color 0.5s linear;
+  border-color: blue;
   color: black;
 }
 </style>
