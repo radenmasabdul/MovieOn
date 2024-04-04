@@ -3,6 +3,7 @@ import Loading from "../../Layout/Loading.vue";
 import ButtonToTop from "../../ButtonToTop.vue";
 
 import { usepopularTvStore } from "../../../utils/stores/tvseries/popularTv";
+
 import { ref, onBeforeMount, computed } from "vue";
 
 const store = usepopularTvStore();
@@ -61,7 +62,9 @@ const loadNextPage = async () => {
             <Loading />
           </div>
 
-          <img v-else :src="getMoviePoster(movie)" :alt="movie.title" class="cursor-pointer" />
+          <RouterLink v-else :to="`/series/popular/${encodeURIComponent(movie.original_name)}/${movie.id}`">
+            <img :src="getMoviePoster(movie)" :alt="movie.original_name" class="rounded-box w-96 cursor-pointer" />
+          </RouterLink>
         </div>
       </div>
 

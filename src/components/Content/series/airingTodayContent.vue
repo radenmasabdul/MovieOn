@@ -3,6 +3,7 @@ import Loading from "../../Layout/Loading.vue";
 import ButtonToTop from "../../ButtonToTop.vue";
 
 import { useairingTodayStore } from "../../../utils/stores/tvseries/airingToday";
+
 import { ref, onBeforeMount, computed } from "vue";
 
 const store = useairingTodayStore();
@@ -61,7 +62,9 @@ const loadNextPage = async () => {
             <Loading />
           </div>
 
-          <img v-else :src="getMoviePoster(movie)" :alt="movie.title" class="cursor-pointer" />
+          <RouterLink v-else :to="`/series/airingtoday/${encodeURIComponent(movie.original_name)}/${movie.id}`">
+            <img :src="getMoviePoster(movie)" :alt="movie.original_name" class="rounded-box w-96 cursor-pointer" />
+          </RouterLink>
         </div>
       </div>
 
