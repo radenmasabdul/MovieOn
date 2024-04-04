@@ -3,6 +3,7 @@ import Loading from "../../Layout/Loading.vue";
 import ButtonToTop from "../../ButtonToTop.vue";
 
 import { usetopRatedStore } from "../../../utils/stores/topRated";
+
 import { ref, onBeforeMount, computed } from "vue";
 
 const store = usetopRatedStore();
@@ -61,7 +62,9 @@ const loadNextPage = async () => {
             <Loading />
           </div>
 
-          <img v-else :src="getMoviePoster(movie)" :alt="movie.title" class="cursor-pointer" />
+          <RouterLink v-else :to="`/movies/toprated/${encodeURIComponent(movie.title)}/${movie.id}`">
+            <img :src="getMoviePoster(movie)" :alt="movie.title" class="rounded-box w-96 cursor-pointer" />
+          </RouterLink>
         </div>
       </div>
 

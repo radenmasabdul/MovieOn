@@ -3,6 +3,7 @@ import Loading from "../../Layout/Loading.vue";
 import ButtonToTop from "../../ButtonToTop.vue";
 
 import { usenowPlayingStore } from "../../../utils/stores/nowPlaying";
+
 import { ref, onBeforeMount, computed } from "vue";
 
 const store = usenowPlayingStore();
@@ -60,8 +61,9 @@ const loadNextPage = async () => {
           <div v-if="itsLoading">
             <Loading />
           </div>
-
-          <img v-else :src="getMoviePoster(movie)" :alt="movie.title" class="cursor-pointer" />
+          <RouterLink v-else :to="`/movies/nowplaying/${encodeURIComponent(movie.title)}/${movie.id}`">
+            <img :src="getMoviePoster(movie)" :alt="movie.title" class="cursor-pointer" />
+          </RouterLink>
         </div>
       </div>
 
