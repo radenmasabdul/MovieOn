@@ -57,7 +57,7 @@ onBeforeMount(async () => {
   await checkTokenValidity();
   window.addEventListener("scroll", handleScroll);
 
-  intervalId.value = setInterval(changePoster, 5000);
+  intervalId.value = setInterval(changePoster, 30000);
 });
 
 const Logout = async () => {

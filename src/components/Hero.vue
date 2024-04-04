@@ -45,7 +45,7 @@ const handleScroll = () => {
 
 onBeforeMount(async () => {
   window.addEventListener("scroll", handleScroll);
-  intervalId.value = setInterval(changePoster, 5000);
+  intervalId.value = setInterval(changePoster, 30000);
 });
 </script>
 
