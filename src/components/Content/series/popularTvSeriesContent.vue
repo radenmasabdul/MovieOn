@@ -4,7 +4,7 @@ import ButtonToTop from "../../ButtonToTop.vue";
 
 import { usepopularTvStore } from "../../../utils/stores/tvseries/popularTv";
 
-import { ref, onBeforeMount, computed } from "vue";
+import { ref, onBeforeMount, computed, onUnmounted } from "vue";
 
 const store = usepopularTvStore();
 
@@ -47,6 +47,10 @@ const loadNextPage = async () => {
     console.error(error);
   }
 };
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+});
 </script>
 
 <template>

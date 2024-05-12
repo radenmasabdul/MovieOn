@@ -4,7 +4,7 @@ import ButtonToTop from "../../ButtonToTop.vue";
 
 import { usenowPlayingStore } from "../../../utils/stores/nowPlaying";
 
-import { ref, onBeforeMount, computed } from "vue";
+import { ref, onBeforeMount, computed, onUnmounted } from "vue";
 
 const store = usenowPlayingStore();
 
@@ -47,6 +47,10 @@ const loadNextPage = async () => {
     console.error(error);
   }
 };
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+});
 </script>
 
 <template>
