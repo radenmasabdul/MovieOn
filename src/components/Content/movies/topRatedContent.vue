@@ -4,7 +4,7 @@ import ButtonToTop from "../../ButtonToTop.vue";
 
 import { usetopRatedStore } from "../../../utils/stores/topRated";
 
-import { ref, onBeforeMount, computed } from "vue";
+import { ref, onBeforeMount, computed, onUnmounted } from "vue";
 
 const store = usetopRatedStore();
 
@@ -47,6 +47,10 @@ const loadNextPage = async () => {
     console.error(error);
   }
 };
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+});
 </script>
 
 <template>
