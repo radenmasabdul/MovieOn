@@ -113,8 +113,8 @@ const closeModal = () => {
           />
           <div @click="togglePasswordVisibility" class="absolute right-9 flex items-center style-eyes cursor-pointer">
             <span>
-              <font-awesome-icon v-if="isHidePassword" :icon="['fas', 'eye']" size="lg" style="color: #000000" />
-              <font-awesome-icon v-else :icon="['fas', 'eye-slash']" size="lg" style="color: #000000" />
+              <font-awesome-icon v-if="isHidePassword" :icon="['fas', 'eye-slash']" size="lg" style="color: #000000" />
+              <font-awesome-icon v-else :icon="['fas', 'eye']" size="lg" style="color: #000000" />
             </span>
           </div>
         </div>
